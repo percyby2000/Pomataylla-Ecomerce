@@ -47,7 +47,7 @@ onAuthStateChanged(auth, user => {
     if (user) {
         console.log('Usuario Activo');
         if (user.emailVerified) {
-            window.location.href = 'https://pomataylla.vercel.app/subirPooroducto.html';
+            window.location.href = 'https://pomataylla.vercel.app/subirProducto.html';
         } else {
             signOut(auth);
         }

@@ -47,7 +47,7 @@ onAuthStateChanged(auth, user => {
     if (user) {
         console.log('Usuario Activo');
         if (user.emailVerified) {
-            window.location.href = 'https://www.google.com/';
+            window.location.href = 'https://pomataylla.vercel.app/subirPooroducto.html';
         } else {
             signOut(auth);
         }

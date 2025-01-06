@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles/login.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Inicio de sesión - Textil Store</title>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="login-card">
+            <div class="brand">
+                <i class="fas fa-spool"></i>
+                <a href="index.html">
+                    <img src="/img/icons/LOGO.png" alt="" width="30" height="30" class="me-2">
+                </a>
+                
+            </div>
+            <h2>Bienvenido de nuevo</h2>
+            <p class="subtitle">Ingresa a tu cuenta para continuar</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="emaillog">Correo electrónico</label>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="emaillog" name="email" required 
+                               placeholder="Ingrese aquí su correo">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="passwordlog">Contraseña</label>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="passwordlog" name="password" required
+                               placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+                <button type="button" id="login" class="btn-primary">Ingresar</button>
+                <button type="button" id="cerrar" class="btn-secondary">Cerrar Sesión</button>
+            </form>
+
+            <div class="register-link">
+                <p>¿No tienes una cuenta? <a href="registro.html">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="scripts/login.js"></script>
+ 
+</body>
+</html>

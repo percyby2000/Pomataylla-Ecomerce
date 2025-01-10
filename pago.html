@@ -11,73 +11,105 @@
     <link href="styles/styles.css" rel="stylesheet">
     <style>
         .payment-container {
-            max-width: 1000px;
-            margin: 0 auto;
+            max-width: 800px;
+            margin: 2rem auto;
             padding: 2rem;
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        .qr-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
+        .payment-summary {
             margin-bottom: 2rem;
         }
 
-        .qr-section img {
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
         }
 
-        .qr-section img:hover {
-            transform: scale(1.02);
-        }
-
-        .order-summary {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
-
-        .form-control, .form-select {
-            border-radius: 6px;
-            padding: 0.75rem 1rem;
-            border: 1px solid #dee2e6;
-        }
-
-        .form-control:focus, .form-select:focus {
-            box-shadow: 0 0 0 0.2rem rgba(42, 46, 52, 0.15);
-        }
-
-        .image-preview-container {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2C3E50;
+            padding: 1rem 0;
+            border-top: 2px solid #2C3E50;
             margin-top: 1rem;
         }
 
-        #imagePreview img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
-        .payment-btn {
-            padding: 1rem 2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .payment-method {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .payment-btn:hover {
+        .payment-method:hover {
+            border-color: #2C3E50;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgb(43, 37, 29);
+        }
+
+        .payment-method.active {
+            border-color: #2C3E50;
+            background-color: #f8f9fa;
+        }
+
+        .payment-method img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .qr-section {
+            display: none;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .qr-section.active {
+            display: block;
+        }
+
+        .qr-code {
+            max-width: 200px;
+            margin: 1rem auto;
+        }
+
+        .product-details {
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+        }
+
+        .payment-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #2C3E50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-btn:hover {
+            background-color: #34495E;
+        
         }
     </style>
     
@@ -97,78 +129,39 @@
         </div>
     </nav>
 
-    <!-- Contenido principal -->
-    <div class="container py-5">
-        <div class="payment-container">
-            <div class="row">
-                <!-- Formulario de pago -->
-                <div class="col-lg-8 pe-lg-4">
-                    <h3 class="mb-4">Información de Pago</h3>
-                    
-                    <!-- QR Section -->
-                    <div class="qr-section">
-                        <img src="img/extra/Qr.jpeg" alt="Yape QR" class="img-fluid mb-3" style="max-width: 250px;">
-                        <h5 class="mb-2">Escanea y paga con Yape</h5>
-                        <p class="text-muted mb-0">Después de realizar el pago, no olvides subir tu comprobante</p>
-                    </div>
-
-                    <form id="payment-form" class="needs-validation">
-                        <!-- Datos personales -->
-                        <div class="row g-3 mb-4">
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Nombre completo</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="customerName" placeholder="Nombres" required>
-                                    <input type="text" class="form-control" id="customerLastName" placeholder="Apellidos" required>
-                                </div>
-                            </div>
-
-                            <div class="col-12 mb-3">
-                                <label for="location" class="form-label">Ubicación</label>
-                                <input type="text" class="form-control" id="location" 
-                                       placeholder="Dirección de entrega" required>
-                            </div>
-
-                            <div class="col-12 mb-3">
-                                <label for="description" class="form-label">Descripción adicional</label>
-                                <textarea class="form-control" id="description" rows="3" 
-                                          placeholder="Referencias para la entrega o notas adicionales"></textarea>
-                            </div>
-
-                            <div class="col-12">
-                                <label for="voucherImage" class="form-label">Comprobante de pago</label>
-                                <input type="file" class="form-control" id="voucherImage" 
-                                       accept="image/*" required>
-                                <div class="image-preview-container">
-                                    <div id="imagePreview" class="mt-2">
-                                        <p class="text-muted mb-0">Vista previa del comprobante</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="w-100 btn btn-primary payment-btn" type="submit">
-                            Confirmar Pago
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Resumen de compra -->
-                <div class="col-lg-4 mt-4 mt-lg-0">
-                    <div class="order-summary">
-                        <h4 class="mb-3">Resumen de compra</h4>
-                        <div id="cart-summary">
-                            <!-- Items del carrito se insertarán aquí -->
-                        </div>
-                        <hr class="my-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Total</h5>
-                            <h5 class="mb-0" id="cart-total">S/. 0.00</h5>
-                        </div>
-                    </div>
+    <div class="payment-container">
+        <div class="payment-summary">
+            <h2>Resumen de Compra</h2>
+            <div id="cart-items">
+                <!-- Los items del carrito se insertarán aquí -->
+            </div>
+            <div class="total-amount">
+                <div class="summary-item">
+                    <span>Total a Pagar:</span>
+                    <span id="total-amount">S/. 0.00</span>
                 </div>
             </div>
         </div>
+
+        <h3>Selecciona tu método de pago</h3>
+        <div class="payment-methods">
+            <div class="payment-method" data-method="yape">
+                <img src="/img/extra/yape.jpg" alt="Yape Logo">
+                <h4>Pagar con Yape</h4>
+                <p><button formsappId="677e204eeb1e0f3377f6a50e"></button>
+                    <script src="https://forms.app/static/embed.js" type="text/javascript" async defer onload="new formsapp('677e204eeb1e0f3377f6a50e', 'popup', {'overlay':'rgba(45,45,45,0.5)','button':{'color':'#820078','text':'¡Haga clic aquí!'},'width':'800px','height':'600px','openingAnimation':{'entrance':'animate__bounceIn','exit':'animate__bounceOut'}}, 'https://g8x0kiiw.forms.app');"></script></p>
+            </div>
+            <div class="payment-method" data-method="paypal">
+                <img src="/img/extra/paypal.png" alt="PayPal Logo">
+                <h4>Pagar con PayPal</h4>
+                <p><button formsappId="677e166eeb1e0f3377f6a4fe"></button>
+                    <script src="https://forms.app/static/embed.js" type="text/javascript" async defer onload="new formsapp('677e166eeb1e0f3377f6a4fe', 'popup', {'overlay':'rgba(45,45,45,0.5)','button':{'color':'#2529DA','text':'¡Haga clic aquí!'},'width':'800px','height':'600px','openingAnimation':{'entrance':'animate__fadeIn','exit':'animate__fadeOut'}}, 'https://8gxq22l8.forms.app');"></script></p>
+            </div>
+        </div>
+
+
+
+
     </div>
 
     <!-- Scripts -->

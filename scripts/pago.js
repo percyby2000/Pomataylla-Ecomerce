@@ -1,106 +1,71 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     // Recuperar carrito del localStorage
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartSummary = document.getElementById('cart-summary');
-    const itemsCount = document.getElementById('items-count');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalAmount = document.getElementById('total-amount');
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const yapeQR = document.getElementById('yape-qr');
+    const confirmButton = document.getElementById('confirm-payment');
 
-    // Mostrar resumen del carrito
-    function displayCartSummary() {
+    // Mostrar items del carrito
+    function displayCartItems() {
         let total = 0;
-        itemsCount.textContent = cart.length;
-
-        cartSummary.innerHTML = cart.map(item => {
-            total += item.price * item.quantity;
+        cartItemsContainer.innerHTML = cart.map(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
             return `
-                <li class="list-group-item d-flex justify-content-between">
-                    <div>
-                        <h6 class="my-0">${item.name}</h6>
-                        <small class="text-muted">Cantidad: ${item.quantity}</small>
+                <div class="summary-item">
+                    <div class="product-details">
+                        <span class="product-name">${item.name}</span>
+                        <br>
+                        <small>Cantidad: ${item.quantity}</small>
                     </div>
-                    <span class="text-muted">S/. ${(item.price * item.quantity).toFixed(2)}</span>
-                </li>
+                    <span>S/. ${itemTotal.toFixed(2)}</span>
+                </div>
             `;
-        }).join('') + `
-            <li class="list-group-item d-flex justify-content-between">
-                <strong>Total</strong>
-                <strong>S/. ${total.toFixed(2)}</strong>
-            </li>
-        `;
+        }).join('');
+
+        totalAmount.textContent = `S/. ${total.toFixed(2)}`;
     }
 
-    // Preview de imagen
-    const voucherInput = document.getElementById('voucherImage');
-    const imagePreview = document.getElementById('imagePreview');
+    // Manejar selección de método de pago
+    paymentMethods.forEach(method => {
+        method.addEventListener('click', function() {
+            // Remover clase active de todos los métodos
+            paymentMethods.forEach(m => m.classList.remove('active'));
+            // Agregar clase active al método seleccionado
+            this.classList.add('active');
+            
+            // Mostrar/ocultar sección de QR para Yape
+            if (this.dataset.method === 'yape') {
+                yapeQR.classList.add('active');
+            } else {
+                yapeQR.classList.remove('active');
+            }
+        });
+    });
 
-    voucherInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                imagePreview.innerHTML = `<img src="${e.target.result}" class="img-fluid" style="max-height: 200px;">`;
-            };
-            reader.readAsDataURL(file);
+    // Manejar confirmación de pago
+    confirmButton.addEventListener('click', function() {
+        const selectedMethod = document.querySelector('.payment-method.active');
+        
+        if (!selectedMethod) {
+            alert('Por favor selecciona un método de pago');
+            return;
+        }
+
+        const paymentMethod = selectedMethod.dataset.method;
+        
+        if (paymentMethod === 'paypal') {
+            // Redirigir a PayPal
+            alert('Redirigiendo a PayPal...');
+            // window.location.href = 'URL_DE_PAYPAL';
+        } else if (paymentMethod === 'yape') {
+            // Procesar pago con Yape
+            alert('Por favor realiza el pago usando el código QR de Yape y guarda tu comprobante');
         }
     });
 
-    // Manejar envío del formulario
-    const paymentForm = document.getElementById('payment-form');
-    paymentForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = {
-            customerName: document.getElementById('customerName').value,
-            customerLastName: document.getElementById('customerLastName').value,
-            phone: document.getElementById('phone').value,
-            location: document.getElementById('location').value,
-            needsShipping: document.getElementById('needsShipping').checked,
-            items: cart,
-            total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-            timestamp: new Date()
-        };
-
-        try {
-            // Aquí puedes agregar la lógica para enviar a Firebase
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // Generar comprobante
-            generateReceipt(formData);
-            
-            // Limpiar carrito
-            localStorage.setItem('cart', JSON.stringify([]));
-            
-            // Redirigir a página de éxito
-            alert('¡Pago procesado con éxito! Se ha generado su comprobante.');
-            window.location.href = 'index.html';
-        } catch (error) {
-            console.error('Error al procesar el pago:', error);
-            alert('Error al procesar el pago. Por favor, intente nuevamente.');
-        }
-    });
-
-    function generateReceipt(formData) {
-        const receipt = document.createElement('div');
-        receipt.innerHTML = `
-            <div style="padding: 20px;">
-                <h2>Comprobante de Pago - POMATAYLLA</h2>
-                <p>Cliente: ${formData.customerName} ${formData.customerLastName}</p>
-                <p>Teléfono: ${formData.phone}</p>
-                <p>Dirección: ${formData.location}</p>
-                <p>Fecha: ${formData.timestamp.toLocaleString()}</p>
-                <h3>Productos:</h3>
-                <ul>
-                    ${formData.items.map(item => `
-                        <li>${item.name} - Cantidad: ${item.quantity} - S/. ${item.price}</li>
-                    `).join('')}
-                </ul>
-                <h3>Total: S/. ${formData.total}</h3>
-            </div>
-        `;
-
-        html2pdf().from(receipt).save(`comprobante_${Date.now()}.pdf`);
-    }
-
-    // Mostrar resumen inicial
-    displayCartSummary();
+    // Mostrar items iniciales
+    displayCartItems();
 });

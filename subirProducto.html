@@ -42,72 +42,7 @@
             border-radius: 8px;
         }
 
-        .whatsapp-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .help-text {
-            background-color: white;
-            color: #25D366;
-            padding: 10px 20px;
-            border-radius: 30px;
-            margin-right: 15px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateX(20px);
-            transition: all 0.3s ease;
-        }
-
-        .whatsapp-float {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .whatsapp-container:hover .help-text {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
-        }
-
-        .whatsapp-float i {
-            font-size: 35px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        @media (max-width: 768px) {
-            .help-text {
-                display: none;
-            }
-
-            .whatsapp-float {
-                width: 60px;
-                height: 60px;
-            }
-
-            .whatsapp-float i {
-                font-size: 30px;
-            }
-        }
+      
     </style>
 </head>
 <body>
